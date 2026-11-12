@@ -1,3 +1,5 @@
 FROM nginx:1.31.8-alpine-slim
 
-COPY dockerlearn.html /usr/share/nginx/html 
+RUN rm /usr/share/nginx/html/index.html
+
+COPY dockerlearn.html /usr/share/nginx/html/index.html 
