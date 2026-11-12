@@ -1,0 +1,76 @@
+services:
+  food:
+    image: prudhviops/fooddelevery:v1.0
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 200M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+      replicas: 4
+    volumes:
+      - food:/opt/data
+    networks:
+      - food-network
+    environment:
+      Name: Prudhvi
+      Location: HYD
+      Project: FoodManager
+  aqua-ui:
+    image: prudhviops/aquaui-test:v1
+    ports:
+      - "1111:80"
+    environment:
+      name: aqua-dashboard
+      maintainer: prudhvi
+      location: BVRM
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 200M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+      replicas: 4
+    volumes:
+      - aquadata:/home/backup
+      - food:/opt/fetch
+    networks:
+      - aquanet
+      - food-network
+
+
+  dockerlearnui:
+    image: prudhviops/docker:learnui
+    ports:
+      - "2222:80"
+    environment:
+      name: DockerlearnUI
+      maintainer: prudhvi
+      location: ongol
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 200M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+      replicas: 8
+      
+volumes:
+  food:
+  aquadata:
+networks:
+  food-network:
+    driver: overlay
+    attachable: true
+  aquanet:
+    driver: overlay
+    attachable: true
+
